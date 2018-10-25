@@ -1,8 +1,10 @@
-## Put comments here that give an overall description of what your
-## functions do
+## The below functions make use of lexical scoping in R to help cache
+## an otherwise computationally intensive operation: matrix inversion
 
-## Write a short comment describing this function
-
+## Create an environment for the matrix x for use in the global environment
+## The functions are standard set+get operations in object-oriented
+## programming; set() may be called to obviate repeated calls to
+## makeCacheMatrix()
 makeCacheMatrix <- function(x = matrix()) {
   m<-NULL
   set<-function(y)  {
@@ -12,18 +14,14 @@ makeCacheMatrix <- function(x = matrix()) {
   get<-function() x
   setInv<-function(xInverse) m<<-xInverse
   getInv<-function() m
-  # res<-list(set=set, get=get,
-  #           setInv=setInv, getInv=getInv)
-  list(set=set, get=get,
-       setInv=setInv, getInv=getInv)
+  return(list(set=set, get=get,
+              setInv=setInv, getInv=getInv))
 }
 
-
-## Write a short comment describing this function
-
+## Takes object created by makeCacheMatrix() as input, returns the inverse of
+## the matrix "x" contained in cachedObj
 cacheSolve <- function(cachedObj, ...) {
   ## Return a matrix that is the inverse of 'cachedObj'
-  # cachedObj<-makeCacheMatrix(x)
   m<-cachedObj$getInv()
   if(!is.null(m)) {
     message("Retrieving cached matrix")
